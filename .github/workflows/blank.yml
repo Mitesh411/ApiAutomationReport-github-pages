@@ -41,7 +41,7 @@ jobs:
       # Run the POSTMAN collection
       - name: Run POSTMAN collection
         run: |
-          newman run reqres.postman_collection.json -e Environmentreqres.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html --reporter-htmlextra-darkTheme  > testResults/runreport1.html
+          newman run reqres.postman_collection.json -e Environmentreqres.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html --reporter-htmlextra-darkTheme  > testResults
          
     # Upload the contents of Test Results directory to workspace
       - name: Output the run Details
@@ -49,3 +49,10 @@ jobs:
         with:
           name: RunReports
           path: testResults
+
+      - name: Publish to Github Pages
+        uses: peaceiris/actions-gh-pages@v3.9.3
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ${{ github.workspace }}/testResults/
